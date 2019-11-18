@@ -1,0 +1,4 @@
+Compile:
+javac -d class *.java
+Run:
+java -cp class Main

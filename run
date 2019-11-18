@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# run using command "sh run"
+
+# javac -d class src/*.java # command for compiling
+java -cp class Main # command for running 
