@@ -1,11 +1,7 @@
 #!/bin/bash
 
-<<<<<<< HEAD
 # run using command "sh run"
+# or chmod 777 run then ./run
 
 # javac -d class src/*.java # command for compiling
 java -cp class Main # command for running 
-=======
-javac -d class src/*.java
-java -cp class Main
->>>>>>> e25ef967803c39078ff5b0447d4db21fbc22fc54
