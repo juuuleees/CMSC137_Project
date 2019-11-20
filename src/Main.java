@@ -1,28 +1,30 @@
 
-import java.util.Scanner;
+// import java.util.Scanner;
+import java.io.IOException;
 
 public class Main {
 	public static void main(String args[]) {
-		final Scanner commandLineScanner = new Scanner(System.in);
+		// final Scanner commandLineScanner = new Scanner(System.in);
 
 		GraphicalUserInterface gui = new GraphicalUserInterface();
-		//boolean isHost = gui.askToBeHost();
-		//System.out.println("Is host: " + isHost);
+		boolean isHost = gui.askToBeHost();
+		System.out.println("User is Host: " + isHost);
 
-        // System.out.print("Would you like to host a new game [y/n]?: ");
-        // String answer = commandLineScanner.next();
-        
-        // if (answer.equals("y")) {
-        // 	isHost = true;
-        // } else if (answer.equals("n")) {
-        // 	isHost = false;
-        // } else {
-        // 	System.out.println("Incorrect input!");
-        // 	System.exit(1);
-        // }
+		if(isHost) {
+			// Instanciate server
+			try {
+				Server server = new Server(gui); // bind a gui to server
+				server.run();
+				System.out.println("Server is running, waiting for players...");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 
-
-
+		} else {
+			// Instanciate player
+			// Player player = new Player(gui); // bind a gui to player
+			// player.run();
+		}
 	}
 }
 

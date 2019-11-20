@@ -8,7 +8,7 @@ import java.awt.event.ActionEvent;
 
 public class AskingToHostPanel extends JPanel {
 
-	private JLabel label = new JLabel("Would you like to host a game?");
+	private JLabel label = new JLabel("Run program as game host?");
 	private JPanel buttonsPanel = new JPanel();
 	private JButton yesButton = new JButton("Yes");
 	private JButton noButton = new JButton("No");
@@ -50,11 +50,11 @@ public class AskingToHostPanel extends JPanel {
 		this.answered = false;
 	}
 
-	public boolean isAnswered() {
+	public boolean answered() {
 		return this.answered;
 	}
 
-	public boolean getAnswer() {
+	public boolean ask() {
 		return this.userIsHost;
 	}
 
