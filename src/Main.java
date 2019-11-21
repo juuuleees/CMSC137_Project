@@ -29,11 +29,11 @@ public class Main {
 			// Instanciate server
 			try {
 				Server server = new Server();
-				server.run();
+				server.start();
+				// server.begin();
 			} catch (IOException e) {
-				System.out.println("Nani?!");
-				e.printStackTrace();
-				// System.out.println("Server timed out.");
+				// e.printStackTrace();
+				System.out.println("Default port unavailable!");
 			}
 
 		} else {

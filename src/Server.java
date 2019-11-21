@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.Scanner;
 import java.lang.Thread;
 
-public class Server implements Runnable {
+public class Server extends Thread {
 	private static final int MIN_PLAYERS = 1; // 3 supposedly, else for testing
 	// private static final int SECONDS = 1000;
 	public static final int DEFAULT_PORT = 8080;
@@ -22,7 +22,6 @@ public class Server implements Runnable {
 	private Scanner scanner = new Scanner(System.in);
 
     private boolean starting = false;
-    private int connectionCount = 0;
 
 	private ServerSocket serverSocket;
 	private PlayerAcceptingThread playerAcceptingThread;
@@ -43,27 +42,22 @@ public class Server implements Runnable {
 		* This class also updates Server's socketConnectionList (ArrayList),
 		* filling it with succesful connections...
 		* It's called a PlayerAcceptingThread.
-		* This will be run later by Server's run method.
+		* This will be run USING START() METHOD later by Server's run method.
         */
         this.playerAcceptingThread = new PlayerAcceptingThread(
         	this.playerListenerThreadList,
         	this.socketConnectionList,
         	this.serverSocket); // ...using the same ServerSocket of Server
       	
+
+        System.out.println("Invoking this.playerAcceptingThr"
+        	+ "ead.start(); at Constructor");
+      	this.playerAcceptingThread.start();
     }
 
-    @Override
-	public void run() {
-
-		try {
-			System.out.println("Loading... ");
-			Thread.sleep(2 * Main.SECONDS);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	public void run () {
 		
-		
-    	System.out.println("Server.run() invoked");
+    	System.out.println("Server thread running...");
 
 		/*
 		* Create a thread to wait for minimum
@@ -72,14 +66,17 @@ public class Server implements Runnable {
 
 		System.out.println("Waiting for minimum players ("
 			+ MIN_PLAYERS + ")...");
+
 		while (!starting) {
-
 			// INVOKE a Thread extending class which accepts client connections
-			this.playerAcceptingThread.run();
+			// this.playerAcceptingThread.start();
+				// Use start() not run() for running threads!
 
-			if(connectionCount >= MIN_PLAYERS) { 
+			if(this.playerAcceptingThread.getConnectionCount()
+				>= MIN_PLAYERS) {
+
 				// System.out.print("Press Enter to start: ");
-				System.out.print("Enter 'start' to play: ");
+				System.out.print("\nEnter 'start' to play!\n");
 				String answer = scanner.next();
 				if(answer.equals("start")) {
 					starting = true;
@@ -87,37 +84,17 @@ public class Server implements Runnable {
 					starting = false;
 				}
 			}
+
+			System.out.print(""); // bounded wait
+			// System.out.println("Still waiting for players..."); // flooding
 		}
 		
     	System.out.println("Starting game...");
 
-
 		
-    	System.out.println("Server.run() ends here");
+    	System.out.println("Ending game...");
+    	System.exit(0);
 	}
-
-	public void acceptPlayers() {
-		/*
-        * Instanciate threads listening for connecting players
-        * Wait for every connections
-        * Then instanciate the PlayerListenerThread
-        */
-        try {
-	        for (int i=0; i < MAX_PLAYERS; i+=1) {
-	        	Socket clientSocket = serverSocket.accept(); // a player connects
-	        	
-	        	PlayerListenerThread playerListenerThread
-	        		= new PlayerListenerThread(serverSocket, clientSocket);
-	        	playerListenerThreadList.add(playerListenerThread);
-
-	        	connectionCount += 1;
-	        	System.out.println("Player " + i+1 + " joined.");
-	        }
-	    } catch (IOException e) {
-	    	e.printStackTrace();
-	    }
-	}
-
 
 	/*
 	* This method selects which kind will be used

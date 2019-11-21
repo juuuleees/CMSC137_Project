@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 
 
-public class PlayerAcceptingThread {
+public class PlayerAcceptingThread extends Thread {
 	private ArrayList<Thread> playerListenerThreadList;
 	private ArrayList<Socket> socketConnectionList;
 	private ServerSocket serverSocket;
@@ -32,22 +32,37 @@ public class PlayerAcceptingThread {
         */
         try {
 	        for (int i=0; i < Server.MAX_PLAYERS; i+=1) {
-	        	Socket clientSocket = serverSocket.accept(); // a player connects
-	        	
+
+        		// a player connects
+	        	Socket clientSocket = serverSocket.accept();
+	        		// Record this connection...
+
+	        	/* Update the ArrayList of PlayerListenerTread
+	        	* which is the same variable shared with the Server
+	        	*/
 	        	PlayerListenerThread playerListenerThread
 	        		= new PlayerListenerThread(serverSocket, clientSocket);
 	        	playerListenerThreadList.add(playerListenerThread);
 
-	        	connectionCount += 1;
+	        	/* Update Server's socketConnectionList, <- same as...
+	        	* which just records all the players by their socket.
+	        	* This is the same as this.socketConnectionList <- ...this one
+	        	*/
+	        	socketConnectionList.add(clientSocket);
+	        		// ...here
+
 	        	System.out.println("Player " + i + " joined.");
+
+	        	connectionCount += 1;
 	        }
 	    } catch (IOException e) {
 	    	// e.printStackTrace();
-	    	System.out.println("Timed out?");
+	    	System.out.println("Server timed out!");
+	    	System.exit(0);
 	    } finally{
-		    System.out.print("The server is now full.");
-		    System.out.print(" From now on, the Server's PlayerAcceptingThread");
-		    System.out.println(" will stop accepting player connections!");
+		    // System.out.print("The server is now full.");
+		    // System.out.print(" From now on, the Server's PlayerAcceptingThread");
+		    // System.out.println(" will stop accepting player connections!");
 	    }
 	}
 
