@@ -51,7 +51,8 @@ public class PlayerAcceptingThread extends Thread {
 	        	socketConnectionList.add(clientSocket);
 	        		// ...here
 
-	        	System.out.println("Player " + i + " joined.");
+	        	int index = i + 1;
+	        	System.out.println("Player " + index + " joined.");
 
 	        	connectionCount += 1;
 	        }

@@ -44,10 +44,10 @@ public class Main {
 			try {
 				// Player player = new Player(scannedIP); 
 				Player player = new Player(HOST_IP); 
-				player.run();
+				player.start();
 			} catch (IOException e) {
 				// e.printStackTrace();
-				System.out.println("Invalid IP address!");
+				System.out.println("Server not running!");
 			}						
 		}
 	}

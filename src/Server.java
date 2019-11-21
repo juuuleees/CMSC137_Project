@@ -10,7 +10,7 @@ import java.util.Scanner;
 import java.lang.Thread;
 
 public class Server extends Thread {
-	private static final int MIN_PLAYERS = 1; // 3 supposedly, else for testing
+	private static final int MIN_PLAYERS = 2; // 3 supposedly, else testing
 	// private static final int SECONDS = 1000;
 	public static final int DEFAULT_PORT = 8080;
 	public static final int MAX_PLAYERS = 13;
@@ -50,9 +50,9 @@ public class Server extends Thread {
         	this.serverSocket); // ...using the same ServerSocket of Server
       	
 
-        System.out.println("Invoking this.playerAcceptingThr"
-        	+ "ead.start(); at Constructor");
-      	this.playerAcceptingThread.start();
+        // System.out.println("Invoking this.playerAcceptingThr"
+        	// + "ead.start(); at Constructor");
+      	// this.playerAcceptingThread.start();
     }
 
 	public void run () {
@@ -67,18 +67,20 @@ public class Server extends Thread {
 		System.out.println("Waiting for minimum players ("
 			+ MIN_PLAYERS + ")...");
 
-		while (!starting) {
-			// INVOKE a Thread extending class which accepts client connections
-			// this.playerAcceptingThread.start();
-				// Use start() not run() for running threads!
+		// INVOKE a Thread extending class which accepts client connections
+		this.playerAcceptingThread.start();
+		// Use start() not run() for running threads!
+		// Also, do not start a thread repeatedly, e.g. in a loop
 
+		while (!starting) {
+			
 			if(this.playerAcceptingThread.getConnectionCount()
 				>= MIN_PLAYERS) {
 
 				// System.out.print("Press Enter to start: ");
-				System.out.print("\nEnter 'start' to play!\n");
+				System.out.print("\nEnter 'play' to start game!\n");
 				String answer = scanner.next();
-				if(answer.equals("start")) {
+				if(answer.equals("play")) {
 					starting = true;
 				} else {
 					starting = false;
@@ -91,6 +93,15 @@ public class Server extends Thread {
 		
     	System.out.println("Starting game...");
 
+    	System.out.println("Distributing cards");
+    	int i = 0;
+    	for(Socket player : socketConnectionList) {
+
+    		System.out.println("player " + player.getRemoteSocketAddress());
+
+    		System.out.println("Test one player.");
+    		break;
+    	}
 		
     	System.out.println("Ending game...");
     	System.exit(0);

@@ -8,7 +8,7 @@ import java.io.DataInputStream;
 import java.io.InputStream;
 
 
-public class Player implements Runnable {
+public class Player extends Thread {
 	private ArrayList<String> cardList = new ArrayList<String>(4);
 
 	Socket serverSocket;
@@ -44,7 +44,9 @@ public class Player implements Runnable {
 
 	@Override
 	public void run() {
-		
+		initializeCards();
+
+		System.out.println("Player exited the game.");
 	}
 
 	private void initializeCards() {
@@ -72,5 +74,8 @@ public class Player implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        System.out.println("Player initialized with ...something...cards."
+                + "");
 	}
 }
