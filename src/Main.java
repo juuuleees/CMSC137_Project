@@ -3,7 +3,11 @@ import java.util.Scanner;
 import java.io.IOException;
 
 public class Main {
+	public static final String HOST_IP = new String("10.0.53.91");
+	public static final int SECONDS = 1000; // 1 thousand milliseconds
+
 	public static void main(String args[]) {
+
 
 		// String serverName = args[0]; //get IP address of server from first param
         // int port = Integer.parseInt(args[1]); //get port from second param
@@ -11,10 +15,10 @@ public class Main {
 		final Scanner scanner = new Scanner(System.in);
 		System.out.print("Host a game [y/n]?: ");
 		String hosting = scanner.next();
-		boolean isHost;
-		if(hosting.equals("y")) {
+		boolean isHost = true;
+		if(hosting.equals("y") || hosting.equals("Y")) {
 			isHost = true;
-		} else if(hosting.equals("n")) {
+		} else if(hosting.equals("n") || hosting.equals("N")) {
 			isHost = false;
 		} else {
 			System.out.println("Invalid input!");
@@ -34,11 +38,12 @@ public class Main {
 
 		} else {
 			// Instanciate player
-			System.out.print("Enter server IP address: ");
-			String hostIP = scanner.next();
+			//System.out.print("Enter server IP address: ");
+			//String scannedIP = scanner.next();
 		
 			try {
-				Player player = new Player(hostIP); // bind a gui to player
+				// Player player = new Player(scannedIP); 
+				Player player = new Player(HOST_IP); 
 				player.run();
 			} catch (IOException e) {
 				// e.printStackTrace();

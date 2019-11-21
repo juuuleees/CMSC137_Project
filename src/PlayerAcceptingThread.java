@@ -6,20 +6,20 @@ import java.io.IOException;
 import java.net.ServerSocket;
 
 
-public class PlayerReceivingThread {
-	private ArrayList<Thread> playerThreadList;
+public class PlayerAcceptingThread {
+	private ArrayList<Thread> playerListenerThreadList;
 	private ArrayList<Socket> socketConnectionList;
 	private ServerSocket serverSocket;
 
 	private int connectionCount = 0;
 
-	public PlayerReceivingThread(
-		ArrayList<Thread> playerThreadList,
+	public PlayerAcceptingThread(
+		ArrayList<Thread> playerListenerThreadList,
 		ArrayList<Socket> socketConnectionList,
 		ServerSocket serverSocket
 		) {
 
-		this.playerThreadList = playerThreadList;
+		this.playerListenerThreadList = playerListenerThreadList;
 		this.socketConnectionList = socketConnectionList;
 		this.serverSocket = serverSocket;
 	}
@@ -36,16 +36,19 @@ public class PlayerReceivingThread {
 	        	
 	        	PlayerListenerThread playerListenerThread
 	        		= new PlayerListenerThread(serverSocket, clientSocket);
-	        	playerThreadList.add(playerListenerThread);
+	        	playerListenerThreadList.add(playerListenerThread);
 
 	        	connectionCount += 1;
-	        	System.out.println("Player " + i+1 + " joined.");
+	        	System.out.println("Player " + i + " joined.");
 	        }
 	    } catch (IOException e) {
-	    	e.printStackTrace();
+	    	// e.printStackTrace();
 	    	System.out.println("Timed out?");
+	    } finally{
+		    System.out.print("The server is now full.");
+		    System.out.print(" From now on, the Server's PlayerAcceptingThread");
+		    System.out.println(" will stop accepting player connections!");
 	    }
-
 	}
 
 	public int getConnectionCount() {
