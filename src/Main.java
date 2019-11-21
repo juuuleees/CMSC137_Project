@@ -1,29 +1,49 @@
 
-// import java.util.Scanner;
+import java.util.Scanner;
 import java.io.IOException;
 
 public class Main {
 	public static void main(String args[]) {
-		// final Scanner commandLineScanner = new Scanner(System.in);
 
-		GraphicalUserInterface gui = new GraphicalUserInterface();
-		boolean isHost = gui.askToBeHost();
-		System.out.println("User is Host: " + isHost);
+		// String serverName = args[0]; //get IP address of server from first param
+        // int port = Integer.parseInt(args[1]); //get port from second param
+
+		final Scanner scanner = new Scanner(System.in);
+		System.out.print("Host a game [y/n]?: ");
+		String hosting = scanner.next();
+		boolean isHost;
+		if(hosting.equals("y")) {
+			isHost = true;
+		} else if(hosting.equals("n")) {
+			isHost = false;
+		} else {
+			System.out.println("Invalid input!");
+			System.exit(0);
+		}
 
 		if(isHost) {
 			// Instanciate server
 			try {
-				Server server = new Server(gui); // bind a gui to server
+				Server server = new Server();
 				server.run();
-				System.out.println("Server is running, waiting for players...");
 			} catch (IOException e) {
+				System.out.println("Nani?!");
 				e.printStackTrace();
+				// System.out.println("Server timed out.");
 			}
 
 		} else {
 			// Instanciate player
-			// Player player = new Player(gui); // bind a gui to player
-			// player.run();
+			System.out.print("Enter server IP address: ");
+			String hostIP = scanner.next();
+		
+			try {
+				Player player = new Player(hostIP); // bind a gui to player
+				player.run();
+			} catch (IOException e) {
+				// e.printStackTrace();
+				System.out.println("Invalid IP address!");
+			}						
 		}
 	}
 }

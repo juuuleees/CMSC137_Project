@@ -6,43 +6,64 @@ import java.util.ArrayList;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.io.IOException;
+import java.util.Scanner;
+import java.lang.Thread;
 
-public class Server extends Player implements Runnable {
-	private static final int SECONDS = 1000;
-	private static final int DEFAULT_PORT = 8080;
-	private static final int MAX_PLAYERS = 13;
-	private static final int TIMEOUT = 60 * SECONDS;
+public class Server implements Runnable {
+	public static final int MIN_PLAYERS = 1; // 3 supposedly
+	public static final int SECONDS = 1000;
+	public static final int DEFAULT_PORT = 8080;
+	public static final int MAX_PLAYERS = 13;
+	public static final int TIMEOUT = 60 * SECONDS;
 
-	private ServerSocket serverSocket = new ServerSocket(DEFAULT_PORT);
-        // binding a socket to a port	
 	private ArrayList<Thread> playerThreadList = new ArrayList<Thread>(13);
 	private ArrayList<Socket> socketConnectionList = new ArrayList<Socket>(13);
-	private GraphicalUserInterface gui;
+	private Scanner scanner = new Scanner(System.in);
 
+    private boolean starting = false;
     private int connectionCount = 0;
 
-    public Server(GraphicalUserInterface gui) throws IOException {
-    	super(); // Server is also a Player
-        this.gui = gui;
+	private ServerSocket serverSocket;
+
+    public Server() throws IOException {
+    	System.out.println("Instaciating Server class");
+
+    	serverSocket = new ServerSocket(DEFAULT_PORT);
         serverSocket.setSoTimeout(TIMEOUT);
 
-        // what else to do at construction?
+        /* Create a thread for accepting player connections */
+		
     }
 
     @Override
 	public void run() {
-		System.out.println("Waiting for other players to join...");
-		while (true) {
-			// if(connectionCount >= 3) {
-				// real code, 3 players should join, if the server won't play
-			// if(connectionCount >= 2) {
-				// or just wait for 2, since server is also a player
-				// but the suggestion was to not overload the server
+		
+    	System.out.println("Server.run() invoked");
 
-			if(connectionCount >= 0) { // testing 1 or 0
-				this.gui.allowStart();
+		/*
+		* Create a thread to wait for minimum
+        * player connections then starts game
+        */
+
+		System.out.println("Waiting for minimum players...");
+		while (!starting) {
+			if(connectionCount >= MIN_PLAYERS) { 
+				// System.out.print("Press Enter to start: ");
+				System.out.print("Enter 'start' to play: ");
+				String answer = scanner.next();
+				if(answer.equals("start")) {
+					starting = true;
+				} else {
+					starting = false;
+				}
 			}
 		}
+		
+    	System.out.println("Starting game...");
+
+
+		
+    	System.out.println("Server.run() ends here");
 	}
 
 	public void acceptPlayers() {
