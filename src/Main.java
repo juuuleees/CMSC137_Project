@@ -1,28 +1,55 @@
 
 import java.util.Scanner;
+import java.io.IOException;
 
 public class Main {
+	public static final String HOST_IP = new String("10.0.53.91");
+	public static final int SECONDS = 1000; // 1 thousand milliseconds
+
 	public static void main(String args[]) {
-		final Scanner commandLineScanner = new Scanner(System.in);
-
-		GraphicalUserInterface gui = new GraphicalUserInterface();
-		//boolean isHost = gui.askToBeHost();
-		//System.out.println("Is host: " + isHost);
-
-        // System.out.print("Would you like to host a new game [y/n]?: ");
-        // String answer = commandLineScanner.next();
-        
-        // if (answer.equals("y")) {
-        // 	isHost = true;
-        // } else if (answer.equals("n")) {
-        // 	isHost = false;
-        // } else {
-        // 	System.out.println("Incorrect input!");
-        // 	System.exit(1);
-        // }
 
 
+		// String serverName = args[0]; //get IP address of server from first param
+        // int port = Integer.parseInt(args[1]); //get port from second param
 
+		final Scanner scanner = new Scanner(System.in);
+		System.out.print("Host a game [y/n]?: ");
+		String hosting = scanner.next();
+		boolean isHost = true;
+		if(hosting.equals("y") || hosting.equals("Y")) {
+			isHost = true;
+		} else if(hosting.equals("n") || hosting.equals("N")) {
+			isHost = false;
+		} else {
+			System.out.println("Invalid input!");
+			System.exit(0);
+		}
+
+		if(isHost) {
+			// Instanciate server
+			try {
+				Server server = new Server();
+				server.start();
+				// server.begin();
+			} catch (IOException e) {
+				// e.printStackTrace();
+				System.out.println("Default port unavailable!");
+			}
+
+		} else {
+			// Instanciate player
+			//System.out.print("Enter server IP address: ");
+			//String scannedIP = scanner.next();
+		
+			try {
+				// Player player = new Player(scannedIP); 
+				Player player = new Player(HOST_IP); 
+				player.start();
+			} catch (IOException e) {
+				// e.printStackTrace();
+				System.out.println("Server not running!");
+			}						
+		}
 	}
 }
 
