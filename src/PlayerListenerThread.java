@@ -26,11 +26,11 @@ public class PlayerListenerThread extends Thread {
 
         this.serverSocket = serverSocket;
         this.clientSocket = clientSocket;
-
-        System.out.println("\nClient from "
+        System.out.println("Client from "
             + this.clientSocket.getRemoteSocketAddress() 
             + " has connected on "
             + this.serverSocket.getLocalPort() + ".");
+        System.out.println("Instanciating a PlayerListenerThread");
     }
 
 	@Override
