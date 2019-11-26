@@ -1,40 +1,41 @@
 import java.net.Socket;
 import java.util.ArrayList;
 import java.lang.Thread;
-import java.net.Socket;
+import java.net.InetAddress;
 import java.io.IOException;
 import java.io.DataInputStream;
 import java.io.InputStream;
 
 public class Player extends Thread {
-	private ArrayList<String> cardList = new ArrayList<String>(4);
-
-	Socket serverSocket;
-	Socket socket;
-
+	
+	private ArrayList<Card> cardList = new ArrayList<Card>(4);
+	private boolean connected;
+	private Socket serverSocket;
+	private Socket socket;
 	private int playerId;
 
-	// private byte[];
+	public Player(InetAddress serverName) {
+		try {
+			System.out.println("Instantiating Player...");
 
-
-	public Player(String serverName) throws IOException {
-		System.out.println("Instanciating Player...");
-
-		/* Open a ClientSocket and connect to ServerSocket */
-        System.out.println("Connecting to " + serverName 
-        	+ " on port " + Server.DEFAULT_PORT);
-        
-		//creating a new socket for client and binding it to a port
-		this.serverSocket = new Socket(serverName, Server.DEFAULT_PORT);
-
-        System.out.println("Just connected to " 
-        	+ serverSocket.getRemoteSocketAddress());
-        
-		System.out.println("Player instanciated ");
+			/* Open a ClientSocket and connect to ServerSocket */
+        	System.out.println("Connecting to " + serverName 
+        		+ " on port " + Server.DEFAULT_PORT);
+	        
+			//creating a new socket for client and binding it to a port
+			this.serverSocket = new Socket(serverName, Server.DEFAULT_PORT);
+	
+        	System.out.println("Just connected to " 
+        		+ serverSocket.getRemoteSocketAddress());
+	        
+			System.out.println("Player instanciated ");
+		} catch (Exception e) {
+			System.out.println(e);
+		}
 	}
 
 	public Player(
-		int playerId, ArrayList<String> cardList, String serverName) {
+		int playerId, ArrayList<Card> cardList, String serverName) {
 		System.out.println("Unused instanciator of Player");
 
 		this.playerId = playerId;
@@ -53,7 +54,7 @@ public class Player extends Thread {
 		/* Wait for server to send cards in byte array format */
 
         try {
-            System.out.println("Receiveing bytes from server "
+            System.out.println("Receiving bytes from server "
                 + serverSocket + ".");
 
             DataInputStream dataInputStream = new DataInputStream(
