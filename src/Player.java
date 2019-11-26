@@ -1,7 +1,7 @@
 import java.net.Socket;
 import java.util.ArrayList;
 import java.lang.Thread;
-import java.net.InetAddress;
+import java.net.Socket;
 import java.io.IOException;
 import java.io.DataInputStream;
 import java.io.InputStream;
@@ -14,24 +14,20 @@ public class Player extends Thread {
 	private Socket socket;
 	private int playerId;
 
-	public Player(InetAddress serverName) {
-		try {
-			System.out.println("Instantiating Player...");
+	public Player(String serverName) throws IOException {
+		System.out.println("Instantiating Player...");
 
-			/* Open a ClientSocket and connect to ServerSocket */
-        	System.out.println("Connecting to " + serverName 
-        		+ " on port " + Server.DEFAULT_PORT);
-	        
-			//creating a new socket for client and binding it to a port
-			this.serverSocket = new Socket(serverName, Server.DEFAULT_PORT);
-	
-        	System.out.println("Just connected to " 
-        		+ serverSocket.getRemoteSocketAddress());
-	        
-			System.out.println("Player instanciated ");
-		} catch (Exception e) {
-			System.out.println(e);
-		}
+		/* Open a ClientSocket and connect to ServerSocket */
+        System.out.println("Connecting to " + serverName 
+        	+ " on port " + Server.DEFAULT_PORT);
+        
+		//creating a new socket for client and binding it to a port
+		this.serverSocket = new Socket(serverName, Server.DEFAULT_PORT);
+
+        System.out.println("Just connected to " 
+        	+ serverSocket.getRemoteSocketAddress());
+        
+		System.out.println("Player instanciated ");
 	}
 
 	public Player(
