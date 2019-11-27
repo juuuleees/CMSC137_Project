@@ -61,7 +61,7 @@ public class Server extends Thread {
 
     /* Instantiate the deck. */
 
-    public void instantiateCards() {
+    public void initializeDeck() {
     	System.out.println("Instantiating deck...");
     	int total_suits = 4;
     	String suit = "";
@@ -114,7 +114,7 @@ public class Server extends Thread {
 	public void run () {
 		
     	System.out.println("Server thread running...");
-    	instantiateCards();
+    	initializeDeck();
 
 		/*
 		* Create a thread to wait for minimum
@@ -150,7 +150,7 @@ public class Server extends Thread {
 		
     	System.out.println("Starting game...");
 
-    	// instantiateCards();
+    	// initializeDeck();
 
     	System.out.println("Distributing cards");
     	int i = 0;
