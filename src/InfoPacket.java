@@ -1,4 +1,6 @@
-public class InfoPacket {
+import java.io.Serializable;
+
+public class InfoPacket implements Serializable {
 	// variable declaration
 	private int player_id;
     private String action;
@@ -22,3 +24,6 @@ public class InfoPacket {
 	}
 
 }
+
+// Reference for implementation:
+//  https://gist.github.com/chatton/14110d2550126b12c0254501dde73616
