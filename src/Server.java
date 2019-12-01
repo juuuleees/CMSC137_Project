@@ -105,9 +105,9 @@ public class Server extends Thread {
 
     	}
 
-    	for (int i = 0; i < deck.size(); i++) {
-    		System.out.println(deck.get(i).get_rank() + ", " + deck.get(i).get_suit());
-    	}
+    	// for (int i = 0; i < deck.size(); i++) {
+    	// 	System.out.println(deck.get(i).get_rank() + ", " + deck.get(i).get_suit());
+    	// }
 
     }
 
@@ -126,6 +126,7 @@ public class Server extends Thread {
 
 		// INVOKE a Thread extending class which accepts client connections
 		this.playerAcceptingThread.start();
+        System.out.println("Starting acceptor thread...");
 		// Use start() not run() for running threads!
 		// Also, do not start a thread repeatedly, e.g. in a loop
 
@@ -150,7 +151,12 @@ public class Server extends Thread {
 		
     	System.out.println("Starting game...");
 
+
     	// initializeDeck();
+
+        for (Thread player_thread : playerListenerThreadList) {
+            player_thread.start();
+        }
 
     	System.out.println("Distributing cards");
     	int i = 0;
@@ -160,10 +166,15 @@ public class Server extends Thread {
 
     		System.out.println("Test one player.");
     		// break;
+
     	}
+
+        for (Thread player_thread : playerListenerThreadList) {
+            InfoPacket player_packet = player_thread.readClientInput();
+        }
 		
-    	System.out.println("Ending game...");
-    	System.exit(0);
+    	// System.out.println("Ending game...");
+    	// System.exit(0);
 	}
 
 	/*

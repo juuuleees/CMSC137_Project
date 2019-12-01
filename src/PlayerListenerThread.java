@@ -13,11 +13,17 @@
 import java.lang.Thread;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.io.ObjectOutputStream;
+import java.io.ObjectInputStream;
+import java.io.OutputStream;
+import java.io.InputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+
 import java.io.IOException;
 
 public class PlayerListenerThread extends Thread {
+
     private ServerSocket serverSocket;
     private Socket clientSocket; // player may be referred as client
 
@@ -36,13 +42,34 @@ public class PlayerListenerThread extends Thread {
 	@Override
 	public void run() {
 		while(true) {
-           
+            
 		}
 	}
 
+    public InfoPacket readClientInput() {
+        try {
+
+            System.out.println("Receiving packet from player at " + this.clientSocket + ".");
+
+            InputStream inputStream = this.clientSocket.getInputStream();
+            ObjectInputStream packetInputStream = new ObjectInputStream(inputStream);
+
+            InfoPacket incomingPacket = (InfoPacket) packetInputStream.readObject();
+            System.out.println("player_id: " + incomingPacket.get_player_id() +
+                               "\naction: " + incomingPacket.get_action() + 
+                               "\nCard: " + incomingPacket.get_card().get_rank() + incomingPacket.get_card().get_suit());
+
+            return incomingPacket;
+
+        } catch (Exception e) {
+            System.out.println(e);
+            return null;
+        }
+    }
+
     public byte[] readBytes() {
         try {
-            System.out.println("Receiveing bytes to client "
+            System.out.println("Receiveing bytes from client "
                 + this.clientSocket + ".");
 
             DataInputStream dataInputStream = new DataInputStream(
@@ -80,6 +107,7 @@ public class PlayerListenerThread extends Thread {
             e.printStackTrace();
         }
     }
+
 }
 
 /*

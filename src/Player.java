@@ -2,6 +2,9 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.net.Socket;
 import java.lang.Thread;
+import java.io.ObjectOutputStream;
+import java.io.ObjectInputStream;
+import java.io.OutputStream;
 import java.io.IOException;
 import java.io.DataInputStream;
 import java.io.InputStream;
@@ -128,6 +131,22 @@ public class Player extends Thread {
 		String action = "pass";
 		InfoPacket packet = new InfoPacket(this.playerId, action, selected_card);
 		System.out.println("Packet created. Preparing to send...");
+		
 	}
+
+	// private void passCard(InfoPacket packet) {
+ //        try {
+            
+ //            System.out.println("Sending card to server...");
+ //            OutputStream outputStream = this.clientSocket.getOutputStream();
+ //            ObjectOutputStream packetStream = new ObjectOutputStream(outputStream);
+
+ //            packetStream.writeObject(packet);
+ //            System.out.println("Card sent.");
+
+ //        } catch (Exception e) {
+ //            System.out.println(e);
+ //        }
+ //    }
 	
 }
