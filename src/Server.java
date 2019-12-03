@@ -15,9 +15,11 @@ public class Server extends Thread {
 	public static final int DEFAULT_PORT = 8080;
 	public static final int MAX_PLAYERS = 13;
 	private static final int TIMEOUT = 60 * Main.SECONDS;
+	private static final int TOTAL_CARDS = 52;
 
 	private ArrayList<Thread> playerListenerThreadList = new ArrayList<Thread>(13);
 	private ArrayList<Socket> socketConnectionList = new ArrayList<Socket>(13);
+	private ArrayList<Card> deck = new ArrayList<Card>(TOTAL_CARDS);
 
 	private Scanner scanner = new Scanner(System.in);
 
@@ -27,6 +29,7 @@ public class Server extends Thread {
 	private PlayerAcceptingThread playerAcceptingThread;
 
     public Server() throws IOException {
+
     	System.out.println("Instaciating Server class");
 
     	serverSocket = new ServerSocket(DEFAULT_PORT);
@@ -53,11 +56,65 @@ public class Server extends Thread {
         // System.out.println("Invoking this.playerAcceptingThr"
         	// + "ead.start(); at Constructor");
       	// this.playerAcceptingThread.start();
+
+    }
+
+    /* Instantiate the deck. */
+
+    public void initializeDeck() {
+    	System.out.println("Instantiating deck...");
+    	int total_suits = 4;
+    	String suit = "";
+    	String rank = "";
+
+    	while (total_suits > 0) {
+
+    		for (int i = 1; i <= TOTAL_CARDS/4; i++) {
+
+    			if (i == 1) {
+    				rank = "Ace";
+    			} else if (i == 11) {
+    				rank = "Jack";
+    			} else if (i == 12) {
+    				rank = "Queen";
+    			} else if (i == 13) {
+    				rank = "King";
+    			} else {
+    				rank = Integer.toString(i);
+    			}
+
+    			if (total_suits == 4) {
+    				suit = "Diamonds";
+    			} else if (total_suits == 3) {
+    				suit = "Hearts";
+    			} else if (total_suits == 2) {
+    				suit = "Spades";
+    			} else if (total_suits == 1) {
+    				suit = "Clubs";
+    			}
+
+    			// System.out.println(suit + ", " + rank);
+
+    			Card new_card = new Card(rank, suit);
+    			deck.add(new_card);
+
+    		}
+
+    		System.out.println();
+    		total_suits--;
+
+    	}
+
+    	for (int i = 0; i < deck.size(); i++) {
+    		System.out.println(deck.get(i).get_rank() + ", " + deck.get(i).get_suit());
+    	}
+
     }
 
 	public void run () {
 		
     	System.out.println("Server thread running...");
+    	initializeDeck();
 
 		/*
 		* Create a thread to wait for minimum
@@ -93,6 +150,8 @@ public class Server extends Thread {
 		
     	System.out.println("Starting game...");
 
+    	// initializeDeck();
+
     	System.out.println("Distributing cards");
     	int i = 0;
     	for(Socket player : socketConnectionList) {
@@ -100,7 +159,7 @@ public class Server extends Thread {
     		System.out.println("player " + player.getRemoteSocketAddress());
 
     		System.out.println("Test one player.");
-    		break;
+    		// break;
     	}
 		
     	System.out.println("Ending game...");

@@ -1,9 +1,9 @@
-
+import java.net.InetAddress;
 import java.util.Scanner;
 import java.io.IOException;
 
 public class Main {
-	public static final String HOST_IP = new String("10.0.53.91");
+	public static final String HOST_IP = new String("192.168.0.25");	
 	public static final int SECONDS = 1000; // 1 thousand milliseconds
 
 	public static void main(String args[]) {
@@ -42,7 +42,7 @@ public class Main {
 			//String scannedIP = scanner.next();
 		
 			try {
-				// Player player = new Player(scannedIP); 
+				// InetAddress host_ip_addr = InetAddress.getByName(HOST_IP_STRING);
 				Player player = new Player(HOST_IP); 
 				player.start();
 			} catch (IOException e) {
