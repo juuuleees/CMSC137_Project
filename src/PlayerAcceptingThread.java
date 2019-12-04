@@ -1,47 +1,59 @@
-
 import java.lang.Thread;
 import java.util.ArrayList;
 import java.net.Socket;
-import java.io.IOException;
 import java.net.ServerSocket;
+import java.io.IOException;
 
 
 public class PlayerAcceptingThread extends Thread {
 	private ArrayList<Thread> playerListenerThreadList;
 	private ArrayList<Socket> socketConnectionList;
 	private ServerSocket serverSocket;
+	private Server server;
 
 	private int connectionCount = 0;
 
 	public PlayerAcceptingThread(
 		ArrayList<Thread> playerListenerThreadList,
 		ArrayList<Socket> socketConnectionList,
-		ServerSocket serverSocket
+		ServerSocket serverSocket,
+		Server server
 		) {
+
+		System.out.println("Instantiating Server.PlayerAcceptingThread.");
 
 		this.playerListenerThreadList = playerListenerThreadList;
 		this.socketConnectionList = socketConnectionList;
 		this.serverSocket = serverSocket;
+		this.server = server;
 	}
 
 	public void run() {
 		/*
-        * Instanciate threads listening for connecting players
+        * Instantiate threads listening for connecting players
         * Wait for every connections
         * Then instanciate the PlayerListenerThread
         */
         try {
 	        for (int i=0; i < Server.MAX_PLAYERS; i+=1) {
-
+	        	int index = i + 1;
+	        	// System.out.println("Waiting for player connection #"
+	        		// + index + "...");
         		// a player connects
 	        	Socket clientSocket = serverSocket.accept();
 	        		// Record this connection...
 
+	        	// System.out.println("Player connection #"
+	        		// + index + " accepted.");
+
 	        	/* Update the ArrayList of PlayerListenerTread
 	        	* which is the same variable shared with the Server
 	        	*/
+	        	// System.out.println("Adding new Server.PlayerListenerThread" 
+	        		// + "for player #" + index);
 	        	PlayerListenerThread playerListenerThread
-	        		= new PlayerListenerThread(serverSocket, clientSocket);
+	        		= new PlayerListenerThread(serverSocket, clientSocket,
+	        			index, this.server);
 	        	playerListenerThreadList.add(playerListenerThread);
 
 	        	/* Update Server's socketConnectionList, <- same as...
@@ -50,8 +62,7 @@ public class PlayerAcceptingThread extends Thread {
 	        	*/
 	        	socketConnectionList.add(clientSocket);
 	        		// ...here
-
-	        	int index = i + 1;
+	        	
 	        	System.out.println("Player " + index + " joined.");
 
 	        	connectionCount += 1;
